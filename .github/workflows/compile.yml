@@ -1,0 +1,38 @@
+name: Compilar Among Us PS2
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Compilar
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/src" \
+            -w /src \
+            h4570/tyra:latest \
+            bash -lc "
+              export PS2DEV=/usr/local/ps2dev
+              export PS2SDK=\$PS2DEV/ps2sdk
+              export PATH=\$PATH:\$PS2DEV/bin:\$PS2DEV/ee/bin
+              export DEBIAN_FRONTEND=noninteractive
+
+              apt-get update
+              apt-get install -y --no-install-recommends libpng-dev zlib1g-dev
+
+              make clean
+              make
+            "
+
+      - name: Enviar ELF
+        uses: actions/upload-artifact@v4
+        with:
+          name: amongus-ps2-elf
+          path: amongus.elf
