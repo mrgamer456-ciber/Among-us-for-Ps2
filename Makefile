@@ -9,6 +9,7 @@ EE_OBJS = \
 
 EE_INCS = \
 	-I./tyra/inc \
+	-I/usr/include/libpng16 \
 	-I$(PS2SDK)/ee/include \
 	-I$(PS2SDK)/common/include
 
