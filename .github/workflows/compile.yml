@@ -27,6 +27,10 @@ jobs:
               apt-get update
               apt-get install -y --no-install-recommends libpng-dev zlib1g-dev
 
+              cd tyra
+              make
+              cd ..
+
               make clean
               make
             "
