@@ -12,7 +12,7 @@ jobs:
       - name: Baixar projeto
         uses: actions/checkout@v4
 
-      - name: Compilar
+      - name: Compilar Tyra e jogo
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/src" \
@@ -22,14 +22,20 @@ jobs:
               export PS2DEV=/usr/local/ps2dev
               export PS2SDK=\$PS2DEV/ps2sdk
               export PATH=\$PATH:\$PS2DEV/bin:\$PS2DEV/ee/bin
-              export DEBIAN_FRONTEND=noninteractive
+              export PS2DEV=\$PS2DEV
 
               apt-get update
               apt-get install -y --no-install-recommends libpng-dev zlib1g-dev
 
-              cd tyra
+              echo Compilando Tyra...
+
+              cd tyra/engine
+              make clean
               make
-              cd ..
+
+              cd ../..
+
+              echo Compilando Among Us PS2...
 
               make clean
               make
